@@ -5,7 +5,7 @@ import { Trend } from 'k6/metrics';
 const sdkInstances = __ENV.sdks || 100;
 const durMax = __ENV.durMax || '60s';
 
-const apiUrl = __ENV.UNLEASH_URL || 'http://localhost:4242/api';
+const apiUrl = __ENV.UNLEASH_URL || 'http://localhost:4242';
 const apiToken = __ENV.UNLEASH_API_TOKEN || '*:development.ba79eb8e9e2c44b9d4a870e539f882c9f62a133acf90d8ca78a2dc14'
 
 
@@ -30,7 +30,7 @@ export default function () {
         'If-None-Match': etag,
       }
     }
-    const response = http.get(`${apiUrl}/client/features`, params);
+    const response = http.get(`${apiUrl}/api/client/features`, params);
     check(response, {
         "status code should be 200 or 304": res => [200, 304].includes(res.status),
     });
@@ -44,7 +44,7 @@ export default function () {
       "instanceId": "instanceId",
       "sdkVersion": "unleash-client-java:2.2.0",
       "strategies": ["default", "some-strategy-1"],
-      "started": "2016-11-03T07:16:43.572Z",
+      "started": new Date(),
       "interval": 10000
     };
     const params = {
@@ -53,7 +53,7 @@ export default function () {
         'Content-Type': 'application/json',
       }
     }
-    const response = http.post(`${apiUrl}/client/register`, JSON.stringify(registration), params);
+    const response = http.post(`${apiUrl}/api/client/register`, JSON.stringify(registration), params);
     check(response, {
         "Register status code should be 202": res => res.status === 202
     });
@@ -82,7 +82,7 @@ export default function () {
         'Content-Type': 'application/json',
       }
     }
-    const response = http.post(`${apiUrl}/client/metrics`, JSON.stringify(metrics), params);
+    const response = http.post(`${apiUrl}/api/client/metrics`, JSON.stringify(metrics), params);
     check(response, {
         "Metrics status code should be 202": res => res.status === 202
     });
