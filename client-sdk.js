@@ -3,7 +3,7 @@ import { group, check, sleep } from 'k6';
 import { Trend } from 'k6/metrics';
 
 const sdkInstances = __ENV.sdks || 100;
-const durMax = __ENV.durMax || '60s';
+const durMax = __ENV.durMax || '120s';
 
 const apiUrl = __ENV.UNLEASH_URL || 'http://localhost:4242';
 const apiToken = __ENV.UNLEASH_API_TOKEN || '*:development.ba79eb8e9e2c44b9d4a870e539f882c9f62a133acf90d8ca78a2dc14'
@@ -93,16 +93,19 @@ export default function () {
     register();
     sleep(0.1);
     let etag = callFeatures();
-    sleep(10);
+    sleep(15);
     callFeatures(etag);
-    sleep(10);
+    sleep(15);
     callFeatures(etag);
-    sleep(10);
+    sleep(15);
+    callFeatures(etag);
+    sleep(15);
     sendMetrics();
     callFeatures(etag);
-    sleep(10);
+    sleep(15);
     callFeatures(etag);
-    sleep(10);
+    sleep(15);
     callFeatures(etag);
+    sleep(15);
   });
 }
